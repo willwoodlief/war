@@ -133,14 +133,17 @@
             hexY = Math.floor(y / (hexHeight + sideLength));
             hexX = Math.floor((x - (hexY % 2) * hexRadius) / hexRectangleWidth);
 
-
+            let valid = false;
             // Check if the mouse's coords are on the board
             if(hexX >= 0 && hexX < boardWidth) {
                 if (hexY >= 0 && hexY < boardHeight) {
+                    valid = true;
                     if (b_mouse_drag) {
 
                         if ( ((n_drag_hex_x !== hexX) || (n_drag_hex_y !== hexY)) && (!drags[hexX][hexY])) {
                             if (!parts[hexX][hexY]) {
+                                //todo make sure there is at least one similar touching, else the drag skipped a hex
+
                                 //drag to empty
                                 if (source_drag_part) {
                                     let id = source_drag_part.get_player_id();
@@ -152,6 +155,8 @@
                                 if (source_drag_part.get_player_id() === parts[hexX][hexY].get_player_id()) {
                                     parts[n_drag_hex_x][n_drag_hex_y] = null;
                                     source_drag_part = parts[hexX][hexY];
+                                } else {
+                                    valid = false;
                                 }
                             }
                             drags[hexX][hexY] = true;
@@ -161,12 +166,18 @@
 
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     drawBoard(ctx, boardWidth, boardHeight);
-                    if (!b_mouse_drag) {
-                        drawHexagon(ctx, hexX, hexY);
-                    }
+                    drawHexagon(ctx, hexX, hexY,!b_mouse_drag);
                 }
+            }
 
-
+            if(!valid) {
+                //cancel mouse drag
+                b_mouse_down = false;
+                b_mouse_drag = false;
+                source_drag_part = null;
+                n_drag_hex_y =-1;
+                n_drag_hex_x = -1;
+                drags = [];
             }
 
 
