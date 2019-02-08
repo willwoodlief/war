@@ -3,7 +3,7 @@
  * @param {Game} game
  * @constructor
  */
-function InputGui(game) {
+function BoardInputGui(game) {
 
     this.b_allow_input = true;
     var

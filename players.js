@@ -27,6 +27,7 @@ function PlayerInfoStruct(id,color,name){
  * @constructor
  */
 function PlayerManager() {
+
     let player_colors = ['#00CC00', '#0000CC'];
     let player_names = ['A', 'B'];
     const NUMBER_PLAYERS = 2;
@@ -45,5 +46,17 @@ function PlayerManager() {
             player_info.push(new PlayerInfoStruct(i, color, name));
         }
         return player_info;
-    }
+    };
+
+    this.set_player_ready_callback = function(players_ready) {
+        players_ready = players_ready || null;
+        this.on_players_ready = players_ready;
+        if (this.on_players_ready) {
+            players_ready(this.get_player_info());
+        }
+    };
+
+
+
+
 }
