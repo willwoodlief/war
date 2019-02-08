@@ -23,8 +23,60 @@ function Hexer(canvas_id, boardWidth, boardHeight, sideLength,game) {
     this.ctx.fillStyle = game.fillStyle;
     this.ctx.strokeStyle = game.strokeStyle;
     this.ctx.lineWidth = game.lineWidth;
+    let that = this;
 
+    this.canvas.addEventListener("mousemove", function (eventInfo) {
 
+        let x = eventInfo.offsetX || eventInfo.layerX;
+        let y = eventInfo.offsetY || eventInfo.layerY;
+
+        let coords = that.get_board_coords(x, y);
+        let is_valid = false;
+        if (coords.hexX >= 0 && coords.hexX < that.boardWidth) {
+            if (coords.hexY >= 0 && coords.hexY < that.boardHeight) {
+                is_valid = true;
+            }
+        }
+        if (that.game.p_onGameMouseMove) {
+            that.game.p_onGameMouseMove(coords,is_valid,eventInfo);
+        }
+    });
+
+    this.canvas.addEventListener("mousedown", function (eventInfo) {
+
+        let x = eventInfo.offsetX || eventInfo.layerX;
+        let y = eventInfo.offsetY || eventInfo.layerY;
+
+        let coords = that.get_board_coords(x, y);
+        let is_valid = false;
+        if (coords.hexX >= 0 && coords.hexX < that.boardWidth) {
+            if (coords.hexY >= 0 && coords.hexY < that.boardHeight) {
+                is_valid = true;
+            }
+        }
+
+        if (that.game.p_onGameMouseDown) {
+            that.game.p_onGameMouseDown(coords,is_valid,eventInfo);
+        }
+    });
+
+    this.canvas.addEventListener("mouseup", function (eventInfo) {
+
+        let x = eventInfo.offsetX || eventInfo.layerX;
+        let y = eventInfo.offsetY || eventInfo.layerY;
+
+        let coords = that.get_board_coords(x, y);
+        let is_valid = false;
+        if (coords.hexX >= 0 && coords.hexX < that.boardWidth) {
+            if (coords.hexY >= 0 && coords.hexY < that.boardHeight) {
+                is_valid = true;
+            }
+        }
+
+        if (that.game.p_onGameMouseUp) {
+            that.game.p_onGameMouseUp(coords,is_valid,eventInfo);
+        }
+    });
     /**
      * @param {Number} x
      * @param {Number} y
