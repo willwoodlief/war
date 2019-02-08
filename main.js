@@ -8,10 +8,32 @@
     const DECAY = 0.1;
     const CANVAS_ID = 'hexmap';
 
-    let player_manager = new PlayerManager();
-    var game = new Game(CANVAS_ID, player_manager, BOARD_WIDTH, BOARD_HEIGHT, SIDE_LENGTH);
-    var input_gui = new InputGui(game);
-    input_gui.b_allow_input = true;
+    let foo = function() {
+        let player_manager = new PlayerManager();
+        var game = new Game(CANVAS_ID, player_manager, BOARD_WIDTH, BOARD_HEIGHT, SIDE_LENGTH);
+        var input_gui = new InputGui(game);
+        input_gui.b_allow_input = true;
+
+        //starting places
+        let places = [
+            {x:0,y:0},
+            {x:game.hexers.boardWidth - 1,y:game.hexers.boardHeight - 1}
+        ];
+        let player_info = player_manager.get_player_info();
+
+        for(let i =0; i < places.length && i < player_info.length; i++) {
+            let player = player_info[i];
+            let coords = places[i];
+            game.parts.set_part(coords.x, coords.y, player.id);
+        }
+
+        game.refresh();
+
+    };
+
+    window.onload = foo;
+
+
 
 
 // players array, each like colors but filled with class that has def, att, b_is_connected, base_color,last_move_tick
@@ -25,20 +47,7 @@
 
     //natural terrain, can modify att or def for that hex, can change how fast can move, can modify decay(-+ or both for all attributes)
 
-    //starting places
-    let places = [
-        {x:0,y:0},
-        {x:game.hexers.boardWidth - 1,y:game.hexers.boardHeight - 1}
-    ];
-    let player_info = player_manager.get_player_info();
 
-    for(let i =0; i < places.length && i < player_info.length; i++) {
-        let player = player_info[i];
-        let coords = places[i];
-        game.parts.set_part(coords.x, coords.y, player.id);
-    }
-
-    game.refresh();
 
 
 
